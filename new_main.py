@@ -72,20 +72,23 @@ def player_turn():
                         selected_card = card
                 if selected_card == None:
                     response = input("You don't have that card. Try again:")
-                if selected_card == '8':
-                    valid_play = True
-                    is_eight = True
-                elif selected_card.suit == active_suit:
-                    valid_play = True
-                elif selected_card.rank == up_card.rank:
-                    valid_play = True
-                if not valid_play:
-                    response = input("That's not a legal play. Try again: ")
                 else:
-                    up_card = selected_card
-                    p_hand.remove(selected_card)
-                    if is_eight:
-                        new_suit()
+                    if selected_card.rank_id == 8:
+                        valid_play = True
+                        is_eight = True
+                    elif selected_card.suit == active_suit:
+                        valid_play = True
+                    elif selected_card.rank == up_card.rank:
+                        valid_play = True
+                    if not valid_play:
+                        response = input("That's not a legal play. Try again: ")
+                    else:
+                        up_card = selected_card
+                        active_suit = up_card.suit
+                        p_hand.remove(selected_card)
+                        if is_eight:
+                            print("1")
+                            new_suit()
 
 def computer_turn():
     global c_hand, deck, up_card, active_suit, blocked
@@ -135,15 +138,17 @@ def computer_turn():
                 blocked += 1
     print("Computer has %i cards left" % (len(c_hand)))
         
-deck = []
-p_hand = []
-c_hand = []
-up_card = None
-init()
-active_suit = up_card.suit
+
+
 done = False
 p_total = c_total = 0
 while not done:
+    deck = []
+    p_hand = []
+    c_hand = []
+    up_card = None
+    init()
+    active_suit = up_card.suit
     game_done = False
     while not game_done:
         log()
